@@ -23,8 +23,7 @@ class RoleValidator {
     validateUpdateRole = [
         body('roleName')
             .trim()
-            .optional()
-            .trim()
+            .notEmpty().withMessage('Role name is required')
             .isString().withMessage('Role name must be a string')
             .custom(async (value, { req }) => {
                 const existingRole = await RoleRepository.findOne({ roleName: value });
@@ -34,8 +33,8 @@ class RoleValidator {
             }),
 
         body('description')
-            .optional()
             .trim()
+            .notEmpty().withMessage('Description is required')
             .isString().withMessage('Description must be a string')
     ];
 }

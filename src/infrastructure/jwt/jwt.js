@@ -1,10 +1,13 @@
 const jwt = require('jsonwebtoken');
+const UserRepository = require('../../domain/repositories/user-repository');
 
-const generateToken = function(res, user) {
+const generateToken = async function(res, user) {
+    const fullUser = await UserRepository.findByIdAndRole(user._id);
+    const roleName = fullUser.role.roleName;
     const token = jwt.sign(
         {
             userId: user._id,
-            role: user.role.roleName
+            role: roleName
         },
         process.env.JWT_SECRET,
         {
