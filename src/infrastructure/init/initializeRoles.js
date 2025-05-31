@@ -1,16 +1,16 @@
 const RoleRepository = require('../../domain/repositories/role-repository');
 
-const initializeRoles = async function() {
-    const existingAdmin = await RoleRepository.findOne({roleName: 'admin'});
-
-    if (!existingAdmin) {
-        await RoleRepository.create({
-            roleName: 'admin',
-            description: 'Administration role',
-        });
-        console.log('Role "admin" created');
-    } else {
-        console.log('Role "admin" already exists');
+const initializeRoles = async function () {
+    const defaultRoles = [
+        { roleName: 'admin', description: 'Administration role' },
+        { roleName: 'user', description: 'Default role' }
+    ];
+    for (let role of defaultRoles) {
+        const existingRole = await RoleRepository.findOne({ roleName: role.roleName });
+        if (!existingRole) {
+            await RoleRepository.create(role);
+            console.log(`Created role name: ${role.roleName}`);
+        }
     }
 };
 

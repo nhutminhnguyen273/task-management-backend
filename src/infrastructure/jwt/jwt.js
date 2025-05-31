@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const generateToken = function(res, user) {
     const token = jwt.sign(
         {
-            userId: user.id,
-            role: user.role
+            userId: user._id,
+            role: user.role.roleName
         },
         process.env.JWT_SECRET,
         {
@@ -15,7 +15,8 @@ const generateToken = function(res, user) {
     res.cookie('token', token, {
         httpOnly: true, // cookie không thể tuy cập bằng JS
         secure: false, // true nếu dùng HTTPS
-        maxAge: 24 * 60 * 60 * 1000 // 1 ngày
+        maxAge: 24 * 60 * 60 * 1000, // 1 ngày
+        sameSite: 'strict'
     });
 };
 
